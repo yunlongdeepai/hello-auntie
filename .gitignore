@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Gradle / Android
+.gradle/
+**/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Local build artifacts (APK is published as a Release asset, not committed)
+out/*.apk
+android/app/build/
+
+# Model weights are downloaded/converted separately (size + license)
+android/app/src/main/assets/models/*.tflite
+
+# One-off report editing scripts kept only in the local working tree
+src/fix_*.py
+src/revise_*.py
+
+# Logs / temp
+*.log
+tmp/

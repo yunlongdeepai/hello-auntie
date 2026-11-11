@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">阿姨你好</string>
+    <string name="camera_permission_title">需要相机权限</string>
+    <string name="camera_permission_body">相机只用于在本机识别亲戚，画面不会上传。请允许相机权限后继续。</string>
+    <string name="grant_permission">允许相机</string>
+    <string name="privacy_note">所有计算在本机完成；人脸数据默认只存本机，可随时删除。</string>
+</resources>
