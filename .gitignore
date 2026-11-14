@@ -23,6 +23,10 @@ captures/
 # Local build intermediates (the distributable APK lives in out/)
 android/app/build/
 
+# APK/AAB are published as Release assets, not committed.
+out/*.apk
+out/*.aab
+
 # Model weights are bundled in this repository for the MVP demo.
 # Keep their source/license record in android/MODEL-LICENSES.md.
 

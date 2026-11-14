@@ -100,7 +100,7 @@ $env:GRADLE_USER_HOME = "D:\DeepSeek Harness\.gradle-home"
 
 ## 9. 当前状态
 
-- 已生成 debug APK：`out/auntie-hello-0.1.0-debug.apk`（约 61 MB，含模型）。
+- 已生成 debug APK：`app/build/outputs/apk/debug/app-debug.apk`；可安装包作为 GitHub Release 附件发布，不进入 Git。
 - 已通过 `core` 的 18 个单元测试。
 - 已在 OnePlus 9 / ColorOS 14 完成基础安装、相机和模型加载验证；ColorOS 15–17 机型矩阵待补。
 - 模型权重已随仓库包含（许可证见 `MODELS.md` 与 `MODEL-LICENSES.md`）。

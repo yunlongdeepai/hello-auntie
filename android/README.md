@@ -2,7 +2,7 @@
 
 本目录是调研报告对应的 Android MVP 骨架，按“**远距只做人体检测 + 跟踪，近距才做人脸识别**”“**只适配 ColorOS 14–17**”实现。
 
-> 已在本机完成 **debug APK 构建**，并通过 `core` 模块单元测试（18 个测试）。构建产物在 `app/build/outputs/apk/debug/app-debug.apk`，仓库内交付副本为 `out/auntie-hello-0.1.0-debug.apk`（含模型）。首次打开 Android Studio 时请把 **Gradle JDK** 指到本仓库自带的 JDK 17（见下方“构建”）。
+> 已在本机完成 **debug APK 构建**，并通过 `core` 模块单元测试（18 个测试）。构建产物在 `app/build/outputs/apk/debug/app-debug.apk`；可安装 APK 作为 GitHub Release 附件发布，不进入 Git。首次打开 Android Studio 时请把 **Gradle JDK** 指到本仓库自带的 JDK 17（见下方“构建”）。
 
 ## 环境
 

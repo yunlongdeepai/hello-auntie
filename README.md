@@ -149,7 +149,7 @@ hello-auntie/
 │   │       └── model/               # Person、Relation、Box、Detection
 │   ├── gradlew / gradlew.bat
 │   └── settings.gradle.kts
-├── out/                             # 调研报告 DOCX/PDF + debug APK
+├── out/                             # 调研报告 DOCX/PDF + SHA256SUMS（APK 在 Release）
 ├── src/                             # 报告 Markdown 源文件与生成脚本
 ├── assets/                          # 报告封面/示意图
 ├── .gitignore
@@ -248,16 +248,19 @@ cd android
 android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-已构建的 debug APK（含模型）也在仓库中：
+已构建的 debug APK（含模型）作为 **GitHub Release 附件**发布，不进入 Git：
 
-[`out/auntie-hello-0.1.0-debug.apk`](out/auntie-hello-0.1.0-debug.apk)（约 61 MB）
+- [GitHub Releases](https://github.com/yunlongdeepai/hello-auntie/releases)
+- 本地文件：`out/auntie-hello-0.1.0-debug.apk`（约 61 MB，已被 `.gitignore` 排除）
 
 校验和：[`out/SHA256SUMS.txt`](out/SHA256SUMS.txt)
 
 ### 6. 安装到手机
 
+从 Release 下载 APK 后：
+
 ```bash
-adb install -r out/auntie-hello-0.1.0-debug.apk
+adb install -r auntie-hello-0.1.0-debug.apk
 ```
 
 首次启动允许相机权限；无需网络权限。
