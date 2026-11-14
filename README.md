@@ -10,6 +10,7 @@
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack%20Compose-Material3-4285F4?logo=jetpackcompose&logoColor=white)
 ![minSdk](https://img.shields.io/badge/minSdk-34-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-MVP-orange)
 
 ---
@@ -425,11 +426,11 @@ Logo 为原创文字标识：`hello` 细字重 + `auntie` 粗字重 + 金色句�
 
 ## 许可证
 
-当前仓库暂未声明开源许可证，代码与文档版权归作者所有。
+本项目代码与文档采用 **MIT License**，详见 [`LICENSE`](LICENSE)。
 
-- 当前仓库随代码分发两份测试模型：`person.tflite`（YOLOv8n，**AGPL-3.0**）与 `mobileface.tflite`（MIT 仓库版本）。对外分发/商用前必须确认对应许可证；来源见 [`android/MODEL-LICENSES.md`](android/MODEL-LICENSES.md)。
+- `person.tflite` 来自 YOLOv8n，受 **AGPL-3.0** 约束；`mobileface.tflite` 来自 MIT 仓库。两份模型虽随本仓库分发，但其许可证独立于本项目的 MIT 许可，详见 [`android/MODEL-LICENSES.md`](android/MODEL-LICENSES.md)。
+- 对外分发/商用前请分别确认模型许可证与训练数据条款。
 - 调研报告引用的第三方资料遵循原出处许可。
-- 如需开源，建议在正式公开前补充 `LICENSE`（如 MIT / Apache-2.0）并确认模型许可证。
 
 ## 致谢
 

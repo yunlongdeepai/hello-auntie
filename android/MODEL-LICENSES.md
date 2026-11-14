@@ -1,6 +1,8 @@
 # 模型来源与许可证
 
-本目录记录 `android/app/src/main/assets/models/` 中两份测试权重的来源，方便后续替换或发行前复核。
+本项目代码采用根目录 [`LICENSE`](../LICENSE) 中的 **MIT License**；模型权重是独立的第三方资产，适用下列各自许可证。
+
+本文件记录 `android/app/src/main/assets/models/` 中两份测试权重的来源，方便后续替换或发行前复核。
 
 ## person.tflite
 
