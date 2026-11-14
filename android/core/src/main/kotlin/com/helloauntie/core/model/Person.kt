@@ -12,6 +12,8 @@ data class Person(
     /** 1 = eldest among siblings; used for 大伯/二伯, 大姨/二姨. */
     val birthOrder: Int? = null,
     val isSelf: Boolean = false,
+    /** Non-kinship courtesy title such as 大爷/大妈/叔叔/阿姨. */
+    val socialTitle: String? = null,
 )
 
 enum class Gender {

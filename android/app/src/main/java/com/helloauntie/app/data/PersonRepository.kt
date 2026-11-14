@@ -169,12 +169,27 @@ class PersonRepository(context: Context) {
         return result
     }
 
+    fun addSocialPerson(
+        name: String,
+        gender: Gender,
+        birthYear: Int?,
+        socialTitle: String,
+    ): Long = insertPerson(
+        name = name,
+        gender = gender,
+        birthYear = birthYear,
+        birthOrder = null,
+        isSelf = false,
+        socialTitle = socialTitle,
+    )
+
     private fun insertPerson(
         name: String,
         gender: Gender,
         birthYear: Int?,
         birthOrder: Int?,
         isSelf: Boolean,
+        socialTitle: String? = null,
     ): Long {
         val values = ContentValues().apply {
             put("name", name)
@@ -182,6 +197,7 @@ class PersonRepository(context: Context) {
             if (birthYear == null) putNull("birth_year") else put("birth_year", birthYear)
             if (birthOrder == null) putNull("birth_order") else put("birth_order", birthOrder)
             put("is_self", if (isSelf) 1 else 0)
+            if (socialTitle == null) putNull("social_title") else put("social_title", socialTitle)
             put("created_at", System.currentTimeMillis())
         }
         return db.insertOrThrow("person", null, values)
@@ -327,5 +343,8 @@ class PersonRepository(context: Context) {
         birthYear = getColumnIndexOrThrow("birth_year").let { if (isNull(it)) null else getInt(it) },
         birthOrder = getColumnIndexOrThrow("birth_order").let { if (isNull(it)) null else getInt(it) },
         isSelf = getInt(getColumnIndexOrThrow("is_self")) == 1,
+        socialTitle = getColumnIndexOrThrow("social_title").let {
+            if (isNull(it)) null else getString(it)?.takeIf { value -> value.isNotBlank() }
+        },
     )
 }

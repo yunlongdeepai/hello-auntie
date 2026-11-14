@@ -69,13 +69,24 @@ class AuntieViewModel(application: Application) : AndroidViewModel(application) 
         preset: RelationPreset,
     ) {
         if (name.isBlank()) return
-        repository.addPersonWithChain(
-            name = name.trim(),
-            gender = gender,
-            birthYear = birthYear,
-            birthOrder = birthOrder,
-            preset = preset,
-        )
+        val cleanName = name.trim()
+        val socialTitle = preset.socialTitle
+        if (socialTitle != null) {
+            repository.addSocialPerson(
+                name = cleanName,
+                gender = gender,
+                birthYear = birthYear,
+                socialTitle = socialTitle,
+            )
+        } else {
+            repository.addPersonWithChain(
+                name = cleanName,
+                gender = gender,
+                birthYear = birthYear,
+                birthOrder = birthOrder,
+                preset = preset,
+            )
+        }
         refresh()
     }
 

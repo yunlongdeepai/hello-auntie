@@ -29,6 +29,17 @@ class KinshipEngine(
             )
         }
 
+        target.socialTitle?.takeIf { it.isNotBlank() }?.let { title ->
+            return TermResult(
+                primary = title,
+                selector = "非亲属常规称呼",
+                confidence = 1.0,
+                known = true,
+                explanation = "非血缘亲属的常规称呼",
+                pathPersonIds = listOf(targetId),
+            )
+        }
+
         val path = graph.shortestPath(egoId, targetId)
             ?: return TermResult(
                 primary = "亲戚",

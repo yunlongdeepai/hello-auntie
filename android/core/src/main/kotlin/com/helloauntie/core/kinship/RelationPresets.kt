@@ -18,6 +18,9 @@ data class RelationPreset(
     val id: String,
     val label: String,
     val steps: List<ChainStep>,
+    /** Set for non-kinship courtesy titles; no graph edge is created. */
+    val socialTitle: String? = null,
+    val targetGender: Gender = Gender.UNKNOWN,
 )
 
 object RelationPresets {
@@ -28,6 +31,34 @@ object RelationPresets {
     val all: List<RelationPreset> = listOf(
         RelationPreset("father", "爸爸", listOf(father)),
         RelationPreset("mother", "妈妈", listOf(mother)),
+        RelationPreset(
+            "social_elder_uncle",
+            "大爷（非亲属，年长男性）",
+            emptyList(),
+            socialTitle = "大爷",
+            targetGender = Gender.MALE,
+        ),
+        RelationPreset(
+            "social_elder_aunt",
+            "大妈（非亲属，年长女性）",
+            emptyList(),
+            socialTitle = "大妈",
+            targetGender = Gender.FEMALE,
+        ),
+        RelationPreset(
+            "social_uncle",
+            "叔叔（非亲属，中年男性）",
+            emptyList(),
+            socialTitle = "叔叔",
+            targetGender = Gender.MALE,
+        ),
+        RelationPreset(
+            "social_aunt",
+            "阿姨（非亲属，中年女性）",
+            emptyList(),
+            socialTitle = "阿姨",
+            targetGender = Gender.FEMALE,
+        ),
         RelationPreset(
             "father_elder_brother",
             "爸爸的哥哥（伯父）",

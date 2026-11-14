@@ -29,6 +29,22 @@ class RelationPresetsTest {
     }
 
     @Test
+    fun socialTitlesAreNotKinshipChains() {
+        val expected = mapOf(
+            "social_elder_uncle" to "大爷",
+            "social_elder_aunt" to "大妈",
+            "social_uncle" to "叔叔",
+            "social_aunt" to "阿姨",
+        )
+        expected.forEach { (id, title) ->
+            val preset = RelationPresets.byId(id)
+            assertEquals(id, preset.id)
+            assertEquals(title, preset.socialTitle)
+            assertTrue(preset.steps.isEmpty())
+        }
+    }
+
+    @Test
     fun paternalCousinChainGoesThroughFathersBrother() {
         val preset = RelationPresets.byId("paternal_cousin_male")
         assertEquals(

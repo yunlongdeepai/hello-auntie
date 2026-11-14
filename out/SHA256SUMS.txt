@@ -1,0 +1,4 @@
+﻿13a04fc09eaaf17ee89485be31bc0ab8293b5a470620bb90a85555ea8e98f832  out/auntie-hello-0.1.0-debug.apk
+a2dde486ad6ec930ec3be2f9248351baef0ac4b1ad93a083fc80bf4884ed74ae  android/app/src/main/assets/models/person.tflite
+be4bc7cfc53f7bc336d0f28b1ab92535f618c913a422b683210750f6b5354854  android/app/src/main/assets/models/mobileface.tflite
+bc5f0cb9364e6d956c9bcfdc3bb5c98291c2ecbf48ecf30f9c26117cc18daec0  out/阿姨你好_技术调研报告_v1.0.pdf

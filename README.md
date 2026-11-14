@@ -25,7 +25,7 @@
 - **称呼推理**：数据库存亲属关系边，称呼由“我”到目标做 BFS 实时计算，而不是把称呼写死在人身上。
 - **完全离线**：不申请网络权限，照片、人脸特征、关系图只存在本机。
 
-当前为 **MVP 阶段**，已完成 debug 构建和核心逻辑单元测试，尚未完成 ColorOS 真机全流程验证。
+当前为 **MVP 阶段**：已完成 debug 构建、18 个单元测试、OnePlus 9 / ColorOS 14 基础验收；ColorOS 15–17 机型矩阵待补。
 
 > 仓库根目录是 `hello-auntie/`；Android 工程在 `hello-auntie/android/`，Android Studio 请打开 `android/` 子目录。
 
@@ -38,6 +38,7 @@
 - [x] 亲属关系图：父母、配偶、兄弟姐妹、子女，支持共同父母推断兄弟姐妹
 - [x] 称呼词典：伯/叔/姑/舅/姨/堂/表、排行、方言变体
 - [x] 关系链录入向导：爸爸的哥哥、妈妈的姐妹、伯母、嫂子、儿媳、堂/表兄弟姐妹等预设
+- [x] 非血缘常规称呼：大爷、大妈、叔叔、阿姨（不建立亲属关系，只保存叫法）
 - [x] 开集人脸匹配：top-1 阈值 + top-2 margin，未知脸拒绝
 - [x] 人脸样本录入：相机页“录入当前人脸”，选择亲戚后保存 embedding
 - [x] 本地 SQLite：person / relation / face_sample
@@ -136,7 +137,7 @@ hello-auntie/
 │   │       │   ├── ml/              # TFLite / 系统 FaceDetector / 演示检测器
 │   │       │   ├── data/            # SQLite + Repository
 │   │       │   └── vm/              # ViewModel
-│   │       ├── assets/models/       # 模型放置目录（不提交权重）
+│   │       ├── assets/models/       # person.tflite / mobileface.tflite（随仓库分发）
 │   │       └── res/
 │   ├── core/                        # 纯 Kotlin 逻辑，无 Android 依赖
 │   │   └── src/main/kotlin/com/helloauntie/core/
@@ -147,7 +148,7 @@ hello-auntie/
 │   │       └── model/               # Person、Relation、Box、Detection
 │   ├── gradlew / gradlew.bat
 │   └── settings.gradle.kts
-├── out/                             # 调研报告 DOCX/PDF（APK 不打入 Git）
+├── out/                             # 调研报告 DOCX/PDF + debug APK
 ├── src/                             # 报告 Markdown 源文件与生成脚本
 ├── assets/                          # 报告封面/示意图
 ├── .gitignore
@@ -246,10 +247,16 @@ cd android
 android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
+已构建的 debug APK（含模型）也在仓库中：
+
+[`out/auntie-hello-0.1.0-debug.apk`](out/auntie-hello-0.1.0-debug.apk)（约 61 MB）
+
+校验和：[`out/SHA256SUMS.txt`](out/SHA256SUMS.txt)
+
 ### 6. 安装到手机
 
 ```bash
-adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+adb install -r out/auntie-hello-0.1.0-debug.apk
 ```
 
 首次启动允许相机权限；无需网络权限。
@@ -258,7 +265,7 @@ adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 
 ## 模型文件
 
-当前工作区已放入一版用于本地 MVP 验证的 float32 权重（`.tflite` 已被 `.gitignore` 排除，不随 Git 提交）：
+当前仓库已随代码分发一版用于 MVP 验证的 float32 权重（约 18 MB，已取消 `.gitignore` 排除）：
 
 ```text
 android/app/src/main/assets/models/person.tflite
@@ -305,17 +312,17 @@ cd android
 .\gradlew.bat :core:test
 ```
 
-覆盖 16 个用例：
+覆盖 18 个用例：
 
 | 测试类 | 覆盖内容 |
 | --- | --- |
-| `KinshipEngineTest` | 爸爸/伯父/伯母/堂弟/姨妈/表姐/外婆/排行/未知关系 |
-| `RelationPresetsTest` | 堂/表兄弟姐妹预设与关系链方向 |
+| `KinshipEngineTest` | 爸爸/伯父/伯母/堂弟/姨妈/表姐/外婆/排行/非亲属称呼/未知关系 |
+| `RelationPresetsTest` | 堂/表兄弟姐妹、非血缘称呼预设与关系链方向 |
 | `ByteTrackerTest` | 跨帧 ID 保持、短暂丢失后恢复、低分检测保活 |
 | `FarNearControllerTest` | 65/55 滞回 |
 | `FaceMatcherTest` | 清晰命中、同人多模板、模糊拒绝、未知拒绝 |
 
-当前状态：**16/16 通过**。
+当前状态：**18/18 通过**。
 
 > 单元测试不等于真机验证；相机、远近切换、人脸录入和识别仍需 ColorOS 真机走查。
 
@@ -335,7 +342,7 @@ cd android
 | SQLite 本地库 | ✅ 已实现 |
 | SQLCipher 加密 | ❌ 未实现 |
 | SCRFD 人脸检测 | ❌ 未实现，当前用系统 FaceDetector |
-| 真实模型权重 | ✅ 已放入本地测试权重（Git 忽略） |
+| 真实模型权重 | ✅ 已随仓库分发（约 18 MB） |
 | 同意记录 / PIPIA / 未成年人流程 | ❌ 未实现 |
 | ColorOS 真机矩阵 | ❌ 未完成 |
 
@@ -369,7 +376,7 @@ cd android
 - 远距目标：人体检测 + 跟踪 25–30 FPS；近距：人脸检测 + 识别 15–20 FPS（目标机型实测为准）。
 - 仅在 **ColorOS 14–17** 上做适配与验证；其他 Android 系统暂不适配。
 - 16 KB 页对齐：debug APK 已通过 `zipalign -c -P 16` 检查；TFLite 版本升级后需重新检查。
-- 目前移除未使用的 `tensorflow-lite-gpu` 依赖；APK 约 62 MB（其中模型约 18 MB）。
+- 目前移除未使用的 `tensorflow-lite-gpu` 依赖；APK 约 61 MB（其中模型约 18 MB）。
 
 ---
 
@@ -414,13 +421,13 @@ Logo 为原创文字标识：`hello` 细字重 + `auntie` 粗字重 + 金色句�
 
 ## 贡献
 
-当前项目处于 MVP 阶段。提交代码前请先开 issue 说明改动范围；新增模型或第三方素材时，请同时补充来源和许可证说明，并确保不把模型权重、真实人脸数据或本机 `local.properties` 提交进仓库。
+当前项目处于 MVP 阶段。提交代码前请先开 issue 说明改动范围；新增模型或第三方素材时，请同时补充来源和许可证说明。模型权重已随仓库分发，更新权重时不要提交真实人脸数据或本机 `local.properties`。
 
 ## 许可证
 
 当前仓库暂未声明开源许可证，代码与文档版权归作者所有。
 
-- 第三方模型权重（YOLO、InsightFace 等）**不随仓库分发**，使用时必须遵守其各自许可证。
+- 当前仓库随代码分发两份测试模型：`person.tflite`（YOLOv8n，**AGPL-3.0**）与 `mobileface.tflite`（MIT 仓库版本）。对外分发/商用前必须确认对应许可证；来源见 [`android/MODEL-LICENSES.md`](android/MODEL-LICENSES.md)。
 - 调研报告引用的第三方资料遵循原出处许可。
 - 如需开源，建议在正式公开前补充 `LICENSE`（如 MIT / Apache-2.0）并确认模型许可证。
 

@@ -110,7 +110,11 @@ private fun PersonCard(
 
             if (item.term.selector.isNotBlank()) {
                 Text(
-                    text = "关系链：${item.term.selector}",
+                    text = if (item.term.selector == "非亲属常规称呼") {
+                        "关系：非亲属常规称呼"
+                    } else {
+                        "关系链：${item.term.selector}"
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp),

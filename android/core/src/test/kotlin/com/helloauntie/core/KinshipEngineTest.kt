@@ -119,6 +119,20 @@ class KinshipEngineTest {
     }
 
     @Test
+    fun socialTitleIsUsedForNonRelatives() {
+        val people = listOf(
+            person(1, "我", Gender.MALE, 2000, isSelf = true),
+            Person(2, "王阿姨", Gender.FEMALE, socialTitle = "阿姨"),
+            Person(3, "李大爷", Gender.MALE, socialTitle = "大爷"),
+        )
+        val engine = KinshipEngine(KinshipGraph(people, emptyList()), Region.SOUTH)
+        assertEquals("阿姨", engine.term(1, 2).primary)
+        assertTrue(engine.term(1, 2).known)
+        assertEquals("大爷", engine.term(1, 3).primary)
+        assertEquals("非亲属常规称呼", engine.term(1, 2).selector)
+    }
+
+    @Test
     fun unknownRelationIsNotGuessed() {
         val people = listOf(
             person(1, "我", Gender.MALE, 2000, isSelf = true),

@@ -62,12 +62,14 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.helloauntie.app.R
 import com.helloauntie.app.domain.AnalysisEngine
 import com.helloauntie.app.domain.CaptureOutcome
 import com.helloauntie.app.domain.FaceSampleCapture
@@ -275,14 +277,18 @@ private fun PermissionPanel(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text("需要相机权限", color = Color.White, style = MaterialTheme.typography.titleMedium)
             Text(
-                "相机只用于在本机识别亲戚，画面不会上传。",
+                stringResource(R.string.camera_permission_title),
+                color = Color.White,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                stringResource(R.string.camera_permission_body),
                 color = Color(0xFFC8D8E4),
                 style = MaterialTheme.typography.bodySmall,
             )
             Button(onClick = onRequest) {
-                Text("允许相机")
+                Text(stringResource(R.string.grant_permission))
             }
         }
     }

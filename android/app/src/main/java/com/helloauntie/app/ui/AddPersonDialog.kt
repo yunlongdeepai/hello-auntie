@@ -76,7 +76,10 @@ fun AddPersonDialog(
                                 text = { Text(option.label) },
                                 onClick = {
                                     preset = option
-                                    gender = option.steps.last().gender
+                                    gender = option.targetGender
+                                        .takeIf { it != Gender.UNKNOWN }
+                                        ?: option.steps.lastOrNull()?.gender
+                                        ?: gender
                                     expanded = false
                                 },
                             )
@@ -85,6 +88,11 @@ fun AddPersonDialog(
                 }
                 Text(
                     "关系链决定称呼。例如选“爸爸的哥哥”，App 会自动建立“爸爸”和“伯父”两个节点。",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    "大爷/大妈/叔叔/阿姨是非血缘常规称呼，只保存叫法，不建立亲属关系。",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

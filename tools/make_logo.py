@@ -122,6 +122,7 @@ def main():
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
     <background android:drawable="@color/ic_launcher_background" />
     <foreground android:drawable="@drawable/ic_launcher_foreground" />
+    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
 </adaptive-icon>
 """
     (icon_dir / "ic_launcher.xml").write_text(adaptive, encoding="utf-8")

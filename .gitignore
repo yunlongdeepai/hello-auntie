@@ -20,12 +20,11 @@ captures/
 .externalNativeBuild/
 .cxx/
 
-# Local build artifacts (APK is published as a Release asset, not committed)
-out/*.apk
+# Local build intermediates (the distributable APK lives in out/)
 android/app/build/
 
-# Model weights are downloaded/converted separately (size + license)
-android/app/src/main/assets/models/*.tflite
+# Model weights are bundled in this repository for the MVP demo.
+# Keep their source/license record in android/MODEL-LICENSES.md.
 
 # One-off report editing scripts kept only in the local working tree
 src/fix_*.py

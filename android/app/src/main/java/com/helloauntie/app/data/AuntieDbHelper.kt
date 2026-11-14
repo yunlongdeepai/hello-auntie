@@ -20,6 +20,7 @@ class AuntieDbHelper(context: Context) : SQLiteOpenHelper(
                 birth_year INTEGER,
                 birth_order INTEGER,
                 is_self INTEGER NOT NULL DEFAULT 0,
+                social_title TEXT,
                 created_at INTEGER NOT NULL
             )
             """.trimIndent(),
@@ -54,14 +55,12 @@ class AuntieDbHelper(context: Context) : SQLiteOpenHelper(
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // MVP: destructive upgrade. Replace with migrations before shipping.
-        db.execSQL("DROP TABLE IF EXISTS face_sample")
-        db.execSQL("DROP TABLE IF EXISTS relation")
-        db.execSQL("DROP TABLE IF EXISTS person")
-        onCreate(db)
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE person ADD COLUMN social_title TEXT")
+        }
     }
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
     }
 }
