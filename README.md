@@ -250,7 +250,7 @@ android/app/build/outputs/apk/debug/app-debug.apk
 
 已构建的 debug APK（含模型）作为 **GitHub Release 附件**发布，不进入 Git：
 
-- [GitHub Releases](https://github.com/yunlongdeepai/hello-auntie/releases)
+- [GitHub Release v0.1.0](https://github.com/yunlongdeepai/hello-auntie/releases/tag/v0.1.0)
 - 本地文件：`out/auntie-hello-0.1.0-debug.apk`（约 61 MB，已被 `.gitignore` 排除）
 
 校验和：[`out/SHA256SUMS.txt`](out/SHA256SUMS.txt)
