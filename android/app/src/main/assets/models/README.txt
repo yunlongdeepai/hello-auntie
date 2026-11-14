@@ -1,7 +1,7 @@
-Models are not bundled.
+Bundled demo models (for local MVP testing; check licenses before distribution).
 
-Put these files here:
-- person.tflite      YOLOv8/YOLO11 person detector, 320x320, output [1,84,N]
-- mobileface.tflite  MobileFaceNet, 112x112, output [1,512]
+- person.tflite      YOLOv8n, input [1,3,640,640] NCHW, output [1,84,8400]
+- mobileface.tflite  MobileFaceNet, input [1,112,112,3] NHWC, output [1,192]
 
-See ../../MODELS.md for details.
+The app auto-detects 320/640 input and NHWC/NCHW for person.tflite.
+See ../../MODELS.md for source, license and replacement notes.

@@ -1,4 +1,8 @@
-# 阿姨你好 · Hello Auntie
+<p align="center">
+  <img src="assets/logo_mark.png" width="120" alt="阿姨你好 logo">
+</p>
+
+<h1 align="center">hello auntie · 阿姨你好</h1>
 
 > 一款**完全离线**的 Android 亲属称呼助手：用相机发现亲戚，走近后识别人脸，并结合“我”的家庭关系图给出正确称呼。
 
@@ -33,7 +37,7 @@
 - [x] 人体检测 + ByteTracker 风格多目标跟踪
 - [x] 亲属关系图：父母、配偶、兄弟姐妹、子女，支持共同父母推断兄弟姐妹
 - [x] 称呼词典：伯/叔/姑/舅/姨/堂/表、排行、方言变体
-- [x] 关系链录入向导：爸爸的哥哥、妈妈的姐妹、伯母、嫂子、儿媳等预设
+- [x] 关系链录入向导：爸爸的哥哥、妈妈的姐妹、伯母、嫂子、儿媳、堂/表兄弟姐妹等预设
 - [x] 开集人脸匹配：top-1 阈值 + top-2 margin，未知脸拒绝
 - [x] 人脸样本录入：相机页“录入当前人脸”，选择亲戚后保存 embedding
 - [x] 本地 SQLite：person / relation / face_sample
@@ -254,7 +258,7 @@ adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 
 ## 模型文件
 
-真实的人体检测和人脸识别需要额外放入模型（仓库不提交权重）：
+当前工作区已放入一版用于本地 MVP 验证的 float32 权重（`.tflite` 已被 `.gitignore` 排除，不随 Git 提交）：
 
 ```text
 android/app/src/main/assets/models/person.tflite
@@ -263,16 +267,15 @@ android/app/src/main/assets/models/mobileface.tflite
 
 ### `person.tflite`
 
-- YOLOv8 / YOLO11 person-only
-- 输入：`[1, 320, 320, 3]` float32（如用 640，需要改 `TflitePersonDetector(inputSize = 640)`）
-- 输出：`[1, 84, 8400]`（4 个框坐标 + 80 类分数）
-- 当前代码取 `person` 类，做 NMS
+- 当前权重：YOLOv8n，输入 `[1, 3, 640, 640]` NCHW，输出 `[1, 84, 8400]`
+- 代码会自动识别 320/640 输入、NHWC/NCHW 布局，并按 class 0（person）解码 + NMS
+- 替换为 320 NHWC 或单类 5 通道模型也可以，解码器已兼容
 
 ### `mobileface.tflite`
 
-- MobileFaceNet / ArcFace 类模型
-- 输入：`[1, 112, 112, 3]` RGB，归一化到 `[-1, 1]`
-- 输出：`[1, 512]` 或 `[1, 128]`，代码自动读取输出维度并做 L2 归一化
+- 当前权重：MobileFaceNet，输入 `[1, 112, 112, 3]` NHWC，输出 `[1, 192]`
+- 预处理：`(pixel - 128) / 128`；代码使用等价的 `(pixel / 127.5) - 1`
+- 输出 128/192/512 维均可，代码自动读取并做 L2 归一化
 
 ### 没有模型时
 
@@ -282,7 +285,7 @@ App 仍可启动：
 - 近距：系统 `FaceDetector` 找人脸，身份显示“未知”；
 - “录入当前人脸”：提示“未安装 mobileface.tflite”。
 
-模型格式、导出命令和许可证注意事项见 [`android/MODELS.md`](android/MODELS.md)。
+模型格式、来源、许可证和日志检查见 [`android/MODELS.md`](android/MODELS.md) 与 [`android/MODEL-LICENSES.md`](android/MODEL-LICENSES.md)。
 
 ---
 
@@ -302,16 +305,17 @@ cd android
 .\gradlew.bat :core:test
 ```
 
-覆盖 13 个用例：
+覆盖 16 个用例：
 
 | 测试类 | 覆盖内容 |
 | --- | --- |
 | `KinshipEngineTest` | 爸爸/伯父/伯母/堂弟/姨妈/表姐/外婆/排行/未知关系 |
+| `RelationPresetsTest` | 堂/表兄弟姐妹预设与关系链方向 |
 | `ByteTrackerTest` | 跨帧 ID 保持、短暂丢失后恢复、低分检测保活 |
 | `FarNearControllerTest` | 65/55 滞回 |
 | `FaceMatcherTest` | 清晰命中、同人多模板、模糊拒绝、未知拒绝 |
 
-当前状态：**13/13 通过**。
+当前状态：**16/16 通过**。
 
 > 单元测试不等于真机验证；相机、远近切换、人脸录入和识别仍需 ColorOS 真机走查。
 
@@ -331,7 +335,7 @@ cd android
 | SQLite 本地库 | ✅ 已实现 |
 | SQLCipher 加密 | ❌ 未实现 |
 | SCRFD 人脸检测 | ❌ 未实现，当前用系统 FaceDetector |
-| 真实模型权重 | ❌ 需自行放入 |
+| 真实模型权重 | ✅ 已放入本地测试权重（Git 忽略） |
 | 同意记录 / PIPIA / 未成年人流程 | ❌ 未实现 |
 | ColorOS 真机矩阵 | ❌ 未完成 |
 
@@ -365,7 +369,7 @@ cd android
 - 远距目标：人体检测 + 跟踪 25–30 FPS；近距：人脸检测 + 识别 15–20 FPS（目标机型实测为准）。
 - 仅在 **ColorOS 14–17** 上做适配与验证；其他 Android 系统暂不适配。
 - 16 KB 页对齐：debug APK 已通过 `zipalign -c -P 16` 检查；TFLite 版本升级后需重新检查。
-- 目前移除未使用的 `tensorflow-lite-gpu` 依赖，APK 约 43 MB。
+- 目前移除未使用的 `tensorflow-lite-gpu` 依赖；APK 约 62 MB（其中模型约 18 MB）。
 
 ---
 
@@ -394,6 +398,19 @@ cd android
 - [ ] 6–8 台 ColorOS 机型性能矩阵
 
 ---
+
+## 品牌资源
+
+<p align="center">
+  <img src="assets/logo_wordmark.png" width="620" alt="阿姨你好 横版组合标">
+</p>
+
+- 圆形徽章：[`assets/logo_mark.png`](assets/logo_mark.png)
+- 横版组合标：[`assets/logo_wordmark.png`](assets/logo_wordmark.png)
+- 设计说明、色板与使用规范：[`assets/logo-notes.md`](assets/logo-notes.md)
+- 生成脚本：[`tools/make_logo.py`](tools/make_logo.py)
+
+Logo 为原创文字标识：`hello` 细字重 + `auntie` 粗字重 + 金色句点，不使用人物插画或徽章，也没有复刻任何现有品牌的图形、字体或商标组合。
 
 ## 贡献
 

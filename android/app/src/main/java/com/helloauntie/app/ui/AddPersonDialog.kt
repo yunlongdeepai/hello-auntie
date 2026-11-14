@@ -115,7 +115,7 @@ fun AddPersonDialog(
                     )
                 }
                 Text(
-                    "排行用于区分大伯/二伯、大姨/二姨；出生年用于判断堂哥/堂弟。",
+                    "排行用于区分大伯/二伯、大姨/二姨；出生年用于判断堂哥/堂弟、表哥/表弟。请先在设置页填“我的出生年”。",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

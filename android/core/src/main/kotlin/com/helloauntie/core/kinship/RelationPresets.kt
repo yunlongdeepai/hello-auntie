@@ -54,6 +54,78 @@ object RelationPresets {
             listOf(mother, ChainStep(KinToken.OS, Gender.FEMALE, "姨妈", SiblingAge.ELDER)),
         ),
         RelationPreset(
+            "paternal_cousin_male",
+            "堂哥/堂弟（爸爸的兄弟的儿子）",
+            listOf(
+                father,
+                ChainStep(KinToken.OB, Gender.MALE, "伯父", SiblingAge.ELDER),
+                ChainStep(KinToken.S, Gender.MALE, "堂兄弟"),
+            ),
+        ),
+        RelationPreset(
+            "paternal_cousin_female",
+            "堂姐/堂妹（爸爸的兄弟的女儿）",
+            listOf(
+                father,
+                ChainStep(KinToken.OB, Gender.MALE, "伯父", SiblingAge.ELDER),
+                ChainStep(KinToken.D, Gender.FEMALE, "堂姐妹"),
+            ),
+        ),
+        RelationPreset(
+            "paternal_aunt_cousin_male",
+            "表哥/表弟（爸爸的姐妹的儿子）",
+            listOf(
+                father,
+                ChainStep(KinToken.OS, Gender.FEMALE, "姑姑", SiblingAge.ELDER),
+                ChainStep(KinToken.S, Gender.MALE, "表兄弟"),
+            ),
+        ),
+        RelationPreset(
+            "paternal_aunt_cousin_female",
+            "表姐/表妹（爸爸的姐妹的女儿）",
+            listOf(
+                father,
+                ChainStep(KinToken.OS, Gender.FEMALE, "姑姑", SiblingAge.ELDER),
+                ChainStep(KinToken.D, Gender.FEMALE, "表姐妹"),
+            ),
+        ),
+        RelationPreset(
+            "maternal_uncle_cousin_male",
+            "表哥/表弟（妈妈的兄弟的儿子）",
+            listOf(
+                mother,
+                ChainStep(KinToken.OB, Gender.MALE, "舅舅", SiblingAge.ELDER),
+                ChainStep(KinToken.S, Gender.MALE, "表兄弟"),
+            ),
+        ),
+        RelationPreset(
+            "maternal_uncle_cousin_female",
+            "表姐/表妹（妈妈的兄弟的女儿）",
+            listOf(
+                mother,
+                ChainStep(KinToken.OB, Gender.MALE, "舅舅", SiblingAge.ELDER),
+                ChainStep(KinToken.D, Gender.FEMALE, "表姐妹"),
+            ),
+        ),
+        RelationPreset(
+            "maternal_aunt_cousin_male",
+            "表哥/表弟（妈妈的姐妹的儿子）",
+            listOf(
+                mother,
+                ChainStep(KinToken.OS, Gender.FEMALE, "姨妈", SiblingAge.ELDER),
+                ChainStep(KinToken.S, Gender.MALE, "表兄弟"),
+            ),
+        ),
+        RelationPreset(
+            "maternal_aunt_cousin_female",
+            "表姐/表妹（妈妈的姐妹的女儿）",
+            listOf(
+                mother,
+                ChainStep(KinToken.OS, Gender.FEMALE, "姨妈", SiblingAge.ELDER),
+                ChainStep(KinToken.D, Gender.FEMALE, "表姐妹"),
+            ),
+        ),
+        RelationPreset(
             "uncle_wife",
             "伯父的妻子（伯母）",
             listOf(

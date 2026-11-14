@@ -2,7 +2,7 @@
 
 本目录是调研报告对应的 Android MVP 骨架，按“**远距只做人体检测 + 跟踪，近距才做人脸识别**”“**只适配 ColorOS 14–17**”实现。
 
-> 已在本机完成 **debug APK 构建**，并通过 `core` 模块单元测试（13 个测试）。构建产物：`app/build/outputs/apk/debug/app-debug.apk`。首次打开 Android Studio 时请把 **Gradle JDK** 指到本仓库自带的 JDK 17（见下方“构建”）。
+> 已在本机完成 **debug APK 构建**，并通过 `core` 模块单元测试（16 个测试）。构建产物：`app/build/outputs/apk/debug/app-debug.apk`。首次打开 Android Studio 时请把 **Gradle JDK** 指到本仓库自带的 JDK 17（见下方“构建”）。
 
 ## 环境
 
@@ -47,10 +47,10 @@ $env:GRADLE_USER_HOME = "D:\DeepSeek Harness\.gradle-home"
 | SQLite 本地库（person/relation/face_sample） | 已实现 |
 | Compose 相机页、亲戚页、设置页、添加亲戚向导 | 已实现 |
 | CameraX 预览 + 图像分析 + YUV→Bitmap | 已实现 |
-| 远距人体检测 | `person.tflite` 存在时使用；否则使用演示框 |
+| 远距人体检测 | 已放入 `person.tflite`（YOLOv8n 640 NCHW，自动解码） |
 | 近距人脸检测 | 系统 `android.media.FaceDetector` 兜底；`face.tflite` 适配待补 |
-| 近距人脸特征 | `mobileface.tflite` 存在时使用；否则显示“未知” |
-| 录入时采集人脸样本 | 已实现：相机页“录入当前人脸” → 选择亲戚 → 存 embedding；需 `mobileface.tflite` |
+| 近距人脸特征 | 已放入 `mobileface.tflite`（112×112，192 维） |
+| 录入时采集人脸样本 | 已实现：相机页“录入当前人脸” → 选择亲戚 → 存 embedding |
 | 数据库加密 / SQLCipher | 未实现（MVP 使用普通 SQLite，正式版必须补） |
 
 ## 目录
@@ -74,14 +74,17 @@ core/              纯 Kotlin 逻辑（无 Android 依赖）
 
 ## 模型文件
 
-把模型放到：
+当前工作区已放入一版测试权重：
 
 ```
 app/src/main/assets/models/person.tflite
 app/src/main/assets/models/mobileface.tflite
 ```
 
-没有模型时 App 仍可启动：远距使用演示框，近距用系统 FaceDetector 找人脸，人脸身份显示“未知”。模型格式见 `MODELS.md`。
+- `person.tflite`：YOLOv8n，640 NCHW，输出 `[1,84,8400]`；代码自动识别输入尺寸/布局
+- `mobileface.tflite`：MobileFaceNet，112×112 NHWC，输出 192 维
+
+`.tflite` 默认被 `.gitignore` 排除，不会随代码提交。替换模型或查看许可证/日志说明见 `MODELS.md` 与 `MODEL-LICENSES.md`。
 
 ## 测试
 
@@ -96,6 +99,7 @@ $env:JAVA_HOME = "D:\DeepSeek Harness\toolchain\jdk17\jdk-17.0.21+9"
 测试覆盖：
 
 - `KinshipEngineTest`：爸爸/伯父/伯母/堂弟/姨妈/表姐/外婆/排行/未知关系
+- `RelationPresetsTest`：堂/表兄弟姐妹预设与关系链方向
 - `ByteTrackerTest`：跨帧 ID 保持、短暂丢失后恢复、低分检测保活
 - `FarNearControllerTest`：65/55 滞回
 - `FaceMatcherTest`：清晰命中、模糊拒绝、未知拒绝
@@ -109,7 +113,7 @@ $env:JAVA_HOME = "D:\DeepSeek Harness\toolchain\jdk17\jdk-17.0.21+9"
 
 ## 下一步
 
-1. 已完成 debug 构建与 13 个单测；下一步在 ColorOS 真机做安装/相机/性能验证。
+1. 已完成 debug 构建与 16 个单测；下一步在 ColorOS 真机做模型识别与性能验证。
 2. 接入 `person.tflite`（YOLOv8/YOLO11 person）并真机测 10–20 m 召回。
 3. 接入 SCRFD 或 MediaPipe Face Detector，替换系统 FaceDetector。
 4. 用真实 `mobileface.tflite` 验证“录入 → embedding → 识别”闭环，并补多张样本/质量筛选。

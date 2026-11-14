@@ -2,6 +2,7 @@ package com.helloauntie.app.ml
 
 import android.content.res.AssetManager
 import android.graphics.Bitmap
+import android.util.Log
 import com.helloauntie.core.model.FaceDetection
 import org.tensorflow.lite.Interpreter
 import java.nio.ByteBuffer
@@ -31,6 +32,11 @@ class TfliteFaceEmbedder(
         }
         interpreter = Interpreter(model, Interpreter.Options().apply { setNumThreads(4) })
         outputDim = interpreter.getOutputTensor(0).shape().lastOrNull() ?: 512
+        Log.i(
+            "HelloAuntieML",
+            "face input=${interpreter.getInputTensor(0).shape().contentToString()} " +
+                "output=${interpreter.getOutputTensor(0).shape().contentToString()}",
+        )
     }
 
     override fun embed(bitmap: Bitmap, face: FaceDetection): FloatArray? {
